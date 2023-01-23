@@ -1,6 +1,6 @@
 <%- include('../../partials/header.ejs') %> <%-
 include('../../partials/navbar.ejs') %>
-<form action="/category/save" method="post">
+<form action="/categories/save" method="post">
   <div class="card">
     <div class="card-header">Cadastro de Categoria</div>
     <div class="card-body">
@@ -21,8 +21,5 @@ include('../../partials/navbar.ejs') %>
     </div>
   </div>
 </form>
-<script>
-  var success = <%= success==undefined?undefined:success %>;
-</script>
-<%- include('../../partials/alert-success.ejs'); %> <%-
+ <%-
 include('../../partials/footer.ejs') %>

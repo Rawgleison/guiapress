@@ -23,7 +23,7 @@ connection.authenticate()
         console.log(error);
     });
 
-app.use("/category", categoriesController);
+app.use("/categories", categoriesController);
 app.use("/article", articlesController);
 
 app.get('/', (req, res) => {
