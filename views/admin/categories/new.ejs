@@ -1,0 +1,28 @@
+<%- include('../../partials/header.ejs') %> <%-
+include('../../partials/navbar.ejs') %>
+<form action="/category/save" method="post">
+  <div class="card">
+    <div class="card-header">Cadastro de Categoria</div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label for="title" class="form-label">Título da categoriaa</label>
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          id="title"
+          aria-describedby="categoryTitleHelp"
+          placeholder="Informe o título da categoria"
+        />
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </div>
+  </div>
+</form>
+<script>
+  var success = <%= success==undefined?undefined:success %>;
+</script>
+<%- include('../../partials/alert-success.ejs'); %> <%-
+include('../../partials/footer.ejs') %>

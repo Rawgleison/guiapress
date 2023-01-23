@@ -1,0 +1,8 @@
+.card{
+    margin-top: 30vh;
+    margin-inline: auto;
+    
+    max-width: 300px;
+    min-width: 50vh;
+    background-color: beige;
+}
