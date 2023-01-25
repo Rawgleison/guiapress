@@ -1,0 +1,27 @@
+<%- include('../../partials/header.ejs') %> <%-
+include('../../partials/navbar.ejs') %>
+<form action="/categories/save" method="post">
+  <div class="card">
+    <div class="card-header">Editando a Categoria <%= category.id %></div>
+    <div class="card-body">
+      <div class="mb-3">
+        <input type="hidden" name="id" value="<%= category.id %>">
+        <label for="title" class="form-label">Título da categoriaa</label>
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          id="title"
+          aria-describedby="categoryTitleHelp"
+          placeholder="Informe o título da categoria"
+          value="<%= category.title %>"
+        />
+      </div>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+  </div>
+</form>
+ <%-
+include('../../partials/footer.ejs') %>

@@ -5,25 +5,52 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
     Category.findAll().then(categories => {
-        res.render('./../views/admin/categories', { categories });
+        res.render('./../views/admin/categories/category.lis.ejs', { categories });
     })
 })
 
 router.get("/new", (req, res) => {
-    console.log(req.body);
-    res.render('../views/admin/categories/new.ejs');
+    res.render('../views/admin/categories/category.new.ejs');
 })
 
 router.post("/save", (req, res) => {
-    const { title } = req.body;
+    const { id, title } = req.body;
     if (!title) {
-        res.redirect('/categories/new');
+        res.redirect('/categories/category.new.ejs');
+        return;
     }
-    Category.create({
+
+    Category.upsert({
+        id: id,
         title: title,
         slug: slugify(title)
     }).then(() => {
-        res.redirect("/");
+        res.redirect("/categories");
+    })
+
+})
+
+router.get("/edit/:id", (req, res) => {
+    const { id } = req.params;
+    if (isNaN(id)) {
+        res.redirect('/categories');
+    }
+
+    Category.findByPk(id).then(category => {
+        res.render('../views/admin/categories/category.edit.ejs', { category: category });
+    })
+})
+
+router.post("/delete", (req, res) => {
+    const { id } = req.body;
+    if (isNaN(id)) {
+        res.redirect('/categories')
+    }
+
+    Category.destroy({
+        where: { id }
+    }).then(() => {
+        res.redirect('/categories');
     })
 })
 

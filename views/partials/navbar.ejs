@@ -1,5 +1,14 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary">
-    <div class="nav navbar-nav">
-        <a class="nav-item nav-link" href="#">Guiapress</a>
-    </div>
+  <div class="nav navbar-nav">
+    <a class="nav-item nav-link" href="/">Guiapress</a>
+
+    <% if(typeof home == 'undefined'){ %> 
+    <a class="nav-item nav-link" href="/categories">Categorias</a>
+    <a class="nav-item nav-link" href="/articles">Artigos</a>
+    <% }else{ %>
+    <% categories.forEach(category => { %>
+      <a class="nav-item nav-link" href="/<%= category.slug %> "><%= category.title %> </a>
+    <% }) %>
+    <% } %> 
+  </div>
 </nav>
