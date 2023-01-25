@@ -1,0 +1,110 @@
+<%- include('../../partials/header.ejs') %> <%-
+include('../../partials/navbar.ejs') %>
+<form action="/users/save" method="post" id="form" novalidate>
+  <div class="card">
+    <div class="card-header">Cadastro de Usuário</div>
+        <div class="card-body">
+        <div class="mb-3">
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome</label>
+          <input type="text" required
+            class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Infomre o nome do usuário">
+          <div class="invalid-feedback">Um nome com mais de 3 caracteres deve ser informado</div>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" required
+          class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="abc@mail.com">
+          <div class="invalid-feedback">Informe um email válido</div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <input type="password" required
+          class="form-control" name="password" id="password" placeholder="********">
+          <div class="invalid-feedback">A senha deve ser informada</div>
+        </div>
+        <div class="mb-3">
+          <label for="password2" class="form-label">Repita a Senha</label>
+          <input type="password" required
+          class="form-control" name="password2" id="password2" placeholder="********">
+          <div class="invalid-feedback" id="pass2Msg"></div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </div>
+  </div>
+</form>
+<%-
+include('../../partials/footer.ejs') %>
+<script>
+    
+    var form = document.getElementById("form");
+    form.addEventListener('submit',function(event){
+        var name = document.getElementById('name');
+        var email = document.getElementById('email');
+        var pass = document.getElementById('password');
+        var pass2 = document.getElementById('password2');
+        var pass2Msg = document.getElementById('pass2Msg');
+
+        ValidAll()
+
+        var valid = true;
+
+        if(name.value.length < 3){
+            name.classList.replace('is-valid','is-invalid');
+            valid = false;
+        }
+        
+        if(!validateEmail(email.value)){
+            email.classList.replace('is-valid','is-invalid');
+            valid = false;
+        }
+        
+        if(pass.value != pass2.value){
+            pass2Msg.textContent = "As senhas não conferem.";
+            pass2.classList.replace('is-valid','is-invalid');
+            valid = false;
+        }
+        
+        if(pass.value == ""){
+            pass.classList.replace('is-valid','is-invalid');
+            valid = false;
+        }
+        
+        if(pass2.value == ""){
+            pass2Msg.textContent = "A Senha de verificação deve ser informada.";
+            pass2.classList.replace('is-valid','is-invalid');
+            valid = false;
+        }
+
+        if(!valid){
+            console.log("Invalido");
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+    })
+
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    function resetValidation(){
+        var fields = document.getElementsByClassName('form-control');
+        Array.prototype.filter.call(fields,function(field){
+            field.classList.remove('is-valid');
+            field.classList.remove('is-invalid');
+        })
+    }
+
+    function ValidAll(){
+        resetValidation();
+        var fields = document.getElementsByClassName('form-control');
+        Array.prototype.filter.call(fields,function(field){
+            field.classList.add('is-valid');
+        })
+    }
+</script>

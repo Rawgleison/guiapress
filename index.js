@@ -3,8 +3,10 @@ const bodyParser = require('body-parser')
 const connection = require('./database/database');
 const categoriesController = require('./categories/CategoriesController');
 const articlesController = require('./articles/ArticlesController');
+const usersController = require('./users/UserController');
 const Article = require('./articles/Article');
 const Category = require('./categories/Category');
+const User = require('./users/user');
 
 const app = express();
 const port = 3000;
@@ -25,6 +27,7 @@ connection.authenticate()
 
 app.use("/categories", categoriesController);
 app.use("/articles", articlesController);
+app.use("/users", usersController);
 
 app.get('/', (req, res) => {
     res.redirect("/1")

@@ -21,7 +21,7 @@ const Article = connection.define('articles', {
 Category.hasMany(Article);
 Article.belongsTo(Category);
 
-// Category.sync({ force: true });
-// Article.sync({ force: true });
+//Cria a tabela no banco se ela não existir
+Article.sync();
 
 module.exports = Article;

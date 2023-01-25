@@ -1,0 +1,31 @@
+<%- include('../../partials/header.ejs') %> <%-
+include('../../partials/navbar.ejs') %>
+<form action="/users/save" method="post">
+  <div class="card">
+    <div class="card-header">Editar Usuário</div>
+        <div class="card-body">
+        <div class="mb-3">
+        </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome</label>
+          <input type="text" value="<%= user.name %> "
+            class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Infomre o nome do usuário">
+          <small id="nameHelp" class="form-text text-muted">Nome do usuário</small>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" value="<%= user.email %> " class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="abc@mail.com">
+          <small id="emailHelp" class="form-text text-muted">Informe um email válido</small>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <input type="password" class="form-control" name="password" id="password" placeholder="********">
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </div>
+  </div>
+</form>
+ <%-
+include('../../partials/footer.ejs') %>

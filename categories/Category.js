@@ -12,4 +12,7 @@ const Category = connection.define('categories', {
     }
 })
 
+//Cria a tabela no banco se ela não existir
+Category.sync();
+
 module.exports = Category;

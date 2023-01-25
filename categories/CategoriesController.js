@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", (req, res) => {
     Category.findAll().then(categories => {
-        res.render('./../views/admin/categories/category.lis.ejs', { categories });
+        res.render('./../views/admin/categories/category.list.ejs', { categories });
     })
 })
 
