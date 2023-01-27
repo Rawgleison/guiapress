@@ -1,31 +1,94 @@
 <%- include('../../partials/header.ejs') %> <%-
 include('../../partials/navbar.ejs') %>
-<form action="/users/save" method="post">
+<form action="/users/save" method="post" id="form" novalidate>
   <div class="card">
-    <div class="card-header">Editar Usuário</div>
+    <div class="card-header">Cadastro de Usuário</div>
         <div class="card-body">
         <div class="mb-3">
+          <input type="hidden" name="id" id="id" value="<%= user.id %> ">
         </div>
         <div class="mb-3">
           <label for="name" class="form-label">Nome</label>
-          <input type="text" value="<%= user.name %> "
+          <input type="text" required value="<%= user.name %> "
             class="form-control" name="name" id="name" aria-describedby="nameHelp" placeholder="Infomre o nome do usuário">
-          <small id="nameHelp" class="form-text text-muted">Nome do usuário</small>
+          <div class="invalid-feedback">Um nome com mais de 3 caracteres deve ser informado</div>
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input type="email" value="<%= user.email %> " class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="abc@mail.com">
-          <small id="emailHelp" class="form-text text-muted">Informe um email válido</small>
-        </div>
-        <div class="mb-3">
-          <label for="password" class="form-label">Senha</label>
-          <input type="password" class="form-control" name="password" id="password" placeholder="********">
+          <input type="email" required value="<%= user.email %> "
+          class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="abc@mail.com">
+          <div class="invalid-feedback">Informe um email válido</div>
         </div>
     </div>
     <div class="card-footer text-muted">
-      <button type="submit" class="btn btn-primary">Cadastrar</button>
+      <button type="submit" class="btn btn-primary">Gravar</button>
     </div>
   </div>
 </form>
- <%-
-include('../../partials/footer.ejs') %>
+<script>
+  window.addEventListener("load",(event) => {
+    'use strict';
+    
+    var form = document.getElementById("form");
+    var name = document.getElementById('name');
+    var email = document.getElementById('email');
+
+    form.addEventListener('submit',function(event){
+      
+      validaName();
+      validaEmail(); 
+
+      if(!checkValidation()){
+        console.log("invalido");
+        event.preventDefault();
+        event.stopPropagation();
+      }
+            
+    })
+
+    function validateEmail(email) {
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
+    }
+
+    function checkValidation(){
+      var fields = document.getElementsByClassName('form-control');
+      var res = true;
+      Array.prototype.filter.call(fields,function(field){
+        if(field.classList.contains('is-invalid')){
+          res = false;
+        }
+      })
+
+      return res;
+    }
+
+    function setValidField(field, valid, obj){
+      field.classList.remove('is-valid');
+      field.classList.remove('is-invalid');
+      if(obj && field.value == ""){
+        return;
+      }
+      
+      if(valid){
+        field.classList.add('is-valid');
+      }else{
+        field.classList.add('is-invalid');
+      }
+    }
+        
+    function validaName(obj){
+      setValidField(name, name.value.length > 3, obj);
+    }
+    
+    function validaEmail(obj){
+      setValidField(email, validateEmail(email.value), obj);
+    }
+    
+    
+    name.onkeyup = validaName;
+    email.onkeyup = validaEmail;
+    
+  })
+  </script>
+  <%- include('../../partials/footer.ejs') %>

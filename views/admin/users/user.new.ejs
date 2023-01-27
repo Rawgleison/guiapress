@@ -20,9 +20,14 @@ include('../../partials/navbar.ejs') %>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Senha</label>
-          <input type="password" required
-          class="form-control" name="password" id="password" placeholder="********">
-          <div class="invalid-feedback">A senha deve ser informada</div>
+          <div class="input-group">
+            <input type="password" required
+            class="form-control" name="password" id="password" placeholder="********">
+            <div class="input-group-addon">
+              <a href=""><i class="fa fa-eye-slash" ></i></a>
+            </div>
+          </div>
+          <div class="invalid-feedback">A senha deve conter mais de 5 caracteres</div>
         </div>
         <div class="mb-3">
           <label for="password2" class="form-label">Repita a Senha</label>
@@ -36,75 +41,99 @@ include('../../partials/navbar.ejs') %>
     </div>
   </div>
 </form>
-<%-
-include('../../partials/footer.ejs') %>
 <script>
+  window.addEventListener("load",(event) => {
+    'use strict';
     
     var form = document.getElementById("form");
+    var name = document.getElementById('name');
+    var email = document.getElementById('email');
+    var password = document.getElementById('password');
+    var password2 = document.getElementById('password2');
+    var pass2Msg = document.getElementById('pass2Msg');
+
     form.addEventListener('submit',function(event){
-        var name = document.getElementById('name');
-        var email = document.getElementById('email');
-        var pass = document.getElementById('password');
-        var pass2 = document.getElementById('password2');
-        var pass2Msg = document.getElementById('pass2Msg');
+      
+      validaName();
+      validaEmail(); 
+      validPassword(); 
+      validPassword2(); 
 
-        ValidAll()
-
-        var valid = true;
-
-        if(name.value.length < 3){
-            name.classList.replace('is-valid','is-invalid');
-            valid = false;
-        }
-        
-        if(!validateEmail(email.value)){
-            email.classList.replace('is-valid','is-invalid');
-            valid = false;
-        }
-        
-        if(pass.value != pass2.value){
-            pass2Msg.textContent = "As senhas não conferem.";
-            pass2.classList.replace('is-valid','is-invalid');
-            valid = false;
-        }
-        
-        if(pass.value == ""){
-            pass.classList.replace('is-valid','is-invalid');
-            valid = false;
-        }
-        
-        if(pass2.value == ""){
-            pass2Msg.textContent = "A Senha de verificação deve ser informada.";
-            pass2.classList.replace('is-valid','is-invalid');
-            valid = false;
-        }
-
-        if(!valid){
-            console.log("Invalido");
-            event.preventDefault();
-            event.stopPropagation();
-        }
-
+      if(!checkValidation()){
+        console.log("invalido");
+        event.preventDefault();
+        event.stopPropagation();
+      }
+            
     })
 
     function validateEmail(email) {
-        var re = /\S+@\S+\.\S+/;
-        return re.test(email);
+      var re = /\S+@\S+\.\S+/;
+      return re.test(email);
     }
 
-    function resetValidation(){
-        var fields = document.getElementsByClassName('form-control');
-        Array.prototype.filter.call(fields,function(field){
-            field.classList.remove('is-valid');
-            field.classList.remove('is-invalid');
-        })
+    function checkValidation(){
+      var fields = document.getElementsByClassName('form-control');
+      var res = true;
+      Array.prototype.filter.call(fields,function(field){
+        if(field.classList.contains('is-invalid')){
+          res = false;
+        }
+      })
+
+      return res;
     }
 
-    function ValidAll(){
-        resetValidation();
-        var fields = document.getElementsByClassName('form-control');
-        Array.prototype.filter.call(fields,function(field){
-            field.classList.add('is-valid');
-        })
+    function setValidField(field, valid, obj){
+      field.classList.remove('is-valid');
+      field.classList.remove('is-invalid');
+      if(obj && field.value == ""){
+        return;
+      }
+      
+      if(valid){
+        field.classList.add('is-valid');
+      }else{
+        field.classList.add('is-invalid');
+      }
     }
-</script>
+        
+    function validaName(obj){
+      setValidField(name, name.value.length > 3, obj);
+    }
+    
+    function validaEmail(obj){
+      setValidField(email, validateEmail(email.value), obj);
+    }
+
+    function validPassword(obj){
+      setValidField(password, password.value.length > 5, obj);
+      validPasswordMatch();
+    }
+
+    function validPassword2(obj){
+      var t = password2.value.length > 5;
+      setValidField(password2, t, obj);
+      if(!t){
+        pass2Msg.textContent = "A senha deve conter mais de 5 caracteres.";
+      }else{
+        validPasswordMatch();
+      }
+    }
+    
+    function validPasswordMatch(){
+      var t = password2.value == password.value;
+      setValidField(password2, t);
+      if(!t){
+        pass2Msg.textContent = "As senhas não conferem.";
+      }
+    }
+    
+    name.onkeyup = validaName;
+    email.onkeyup = validaEmail;
+    password.onkeyup = validPassword;
+    password2.onkeyup = validPassword2;
+    
+  })
+  </script>
+  <%- include('../../partials/footer.ejs') %>

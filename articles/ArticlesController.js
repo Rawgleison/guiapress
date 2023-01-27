@@ -2,9 +2,10 @@ const express = require('express');
 const Category = require('../categories/Category');
 const Article = require('./Article');
 const { default: slugify } = require('slugify');
+const checkAuth = require('../middlewares/checkAuth');
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     Article.findAll({
         include: [{ model: Category }]
     }).then(articles => {
@@ -14,7 +15,7 @@ router.get("/", (req, res) => {
     })
 })
 
-router.get("/new", (req, res) => {
+router.get("/new", checkAuth, (req, res) => {
     Category.findAll().then(categories => {
         res.render('./../views/admin/articles/article.new.ejs', { categories: categories });
     }).catch(() => {
@@ -22,7 +23,7 @@ router.get("/new", (req, res) => {
     })
 })
 
-router.post("/delete", (req, res) => {
+router.post("/delete", checkAuth, (req, res) => {
     const { id } = req.body;
     if (isNaN(id)) {
         res.redirect('/articles')
@@ -35,7 +36,7 @@ router.post("/delete", (req, res) => {
     })
 })
 
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", checkAuth, (req, res) => {
     const { id } = req.params;
     Article.findOne({ where: { id }, include: [{ model: Category }] }).then(article => {
         if (!article) {
@@ -50,7 +51,7 @@ router.get("/edit/:id", (req, res) => {
     })
 })
 
-router.get("/article/:slug", (req, res) => {
+router.get("/article/:slug", checkAuth, (req, res) => {
     const { slug } = req.params;
     Article.findOne({ where: { slug }, include: [{ model: Category }] }).then(article => {
         if (!article) {
@@ -62,7 +63,7 @@ router.get("/article/:slug", (req, res) => {
     })
 })
 
-router.post("/save", (req, res) => {
+router.post("/save", checkAuth, (req, res) => {
     const { id, title, body, categoryId } = req.body;
 
     Article.upsert({

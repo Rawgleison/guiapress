@@ -1,14 +1,47 @@
-<nav class="navbar navbar-expand navbar-dark bg-primary">
-  <div class="nav navbar-nav">
-    <a class="nav-item nav-link" href="/">Guiapress</a>
-
-    <% if(typeof home == 'undefined'){ %> 
-    <a class="nav-item nav-link" href="/categories">Categorias</a>
-    <a class="nav-item nav-link" href="/articles">Artigos</a>
-    <% }else{ %>
-    <% categories.forEach(category => { %>
-      <a class="nav-item nav-link" href="/<%= category.slug %> "><%= category.title %> </a>
-    <% }) %>
-    <% } %> 
-  </div>
+<nav style="height: 3rem;"></nav>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">Guiapress</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <% if(typeof categories != "undefined"){ %> 
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Categorias
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+            <% categories.forEach(category => { %>
+              <li><a class="dropdown-item" href="/category/<%= category.slug %> "><%= category.title %></a></li>
+            <% }) %>
+          </ul>
+        </li>
+        <% } %> 
+      </ul>
+    </div>
+    <div>
+      <ul class="navbar-nav ml-auto">
+    <% if(typeof user == "object"){ %> 
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <%= user.name %> 
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/categories">Categorias</a></li>
+            <li><a class="dropdown-item" href="/articles">Artigos</a></li>
+            <li><a class="dropdown-item" href="/users">Usuários</a></li>
+            <div class="dropdown-divider"></div>
+            <li><a class="dropdown-item" href="/logoff">Logoff</a></li>
+          </ul>
+        </li>
+        <% }else{ %>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
 </nav>
+
