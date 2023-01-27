@@ -1,0 +1,55 @@
+<%- include('./partials/header.ejs') %>
+<style>
+    .container{
+        width: 25rem;
+        margin-top: 10vh;
+    }
+
+
+</style>
+<form action="/auth" method="post" id="form">
+  <div class="container">
+  <div class="card">
+    <div class="card-header">Login</div>
+        <div class="card-body">
+        <div class="mb-3">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" required
+          class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="abc@mail.com">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <div class="input-group">
+            <input type="password" required
+            class="form-control" name="password" id="password" placeholder="********">
+            <div class="input-group-addon">
+              <a href=""><i class="fa fa-eye-slash" ></i></a>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+      <button type="submit" class="btn btn-primary">Logar</button>
+    </div>
+  </div>
+  <br>
+  <div id="alert"></div>
+  </div>
+</form>
+<%- include('./partials/footer.ejs') %>
+<script>
+
+  '<% if(typeof msg == "string"){ %>'
+    function showAlert(str){
+    $('<div class="alert alert-danger alert-dismissible" role="alert">' + str +
+      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'+
+      '</div>').hide().appendTo("#alert").fadeIn(1000);
+    }
+    var msg = '<%= msg %>';
+    if(msg != ''){
+      showAlert(msg);
+    }
+  '<% } %>'
+</script>

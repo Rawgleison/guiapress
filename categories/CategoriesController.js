@@ -1,19 +1,20 @@
 const express = require('express');
 const Category = require('./Category');
 const slugify = require('slugify');
+const checkAuth = require('../middlewares/checkAuth');
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", checkAuth, (req, res) => {
     Category.findAll().then(categories => {
         res.render('./../views/admin/categories/category.list.ejs', { categories });
     })
 })
 
-router.get("/new", (req, res) => {
+router.get("/new", checkAuth, (req, res) => {
     res.render('../views/admin/categories/category.new.ejs');
 })
 
-router.post("/save", (req, res) => {
+router.post("/save", checkAuth, (req, res) => {
     const { id, title } = req.body;
     if (!title) {
         res.redirect('/categories/category.new.ejs');
@@ -30,7 +31,7 @@ router.post("/save", (req, res) => {
 
 })
 
-router.get("/edit/:id", (req, res) => {
+router.get("/edit/:id", checkAuth, (req, res) => {
     const { id } = req.params;
     if (isNaN(id)) {
         res.redirect('/categories');
@@ -41,7 +42,7 @@ router.get("/edit/:id", (req, res) => {
     })
 })
 
-router.post("/delete", (req, res) => {
+router.post("/delete", checkAuth, (req, res) => {
     const { id } = req.body;
     if (isNaN(id)) {
         res.redirect('/categories')
